@@ -49,7 +49,7 @@ go: creating new go.mod: module example.com/hello
 
 ```bash
 $ go get github.com/GmSSL/GmSSL-Go@latest
-go: added github.com/GmSSL/GmSSL-Go v1.3.0
+go: added github.com/GmSSL/GmSSL-Go v1.3.1
 ```
 
 打开文件`go.mod`，内容如下
@@ -58,12 +58,12 @@ module example.com/hello
 
 go 1.21.1
 
-require github.com/GmSSL/GmSSL-Go v1.3.0 // indirect
+require github.com/GmSSL/GmSSL-Go v1.3.1 // indirect
 ```
 
 在文件`go.mod`最后面添加一行
 ```
-replace gmssl => github.com/GmSSL/GmSSL-Go v1.3.0
+replace gmssl => github.com/GmSSL/GmSSL-Go v1.3.1
 ```
 
 更新模块信息
