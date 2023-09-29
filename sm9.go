@@ -178,7 +178,7 @@ type Sm9EncKey struct {
 	id string
 }
 
-func ImportEncryptedSm9EncPrivateKeyInfoPem(pass string, path string, id string) (*Sm9EncKey, error) {
+func ImportEncryptedSm9EncPrivateKeyInfoPem(path string, pass string, id string) (*Sm9EncKey, error) {
 
 	pass_str := C.CString(pass)
 	defer C.free(unsafe.Pointer(pass_str))
@@ -206,7 +206,7 @@ func (sm9 *Sm9EncKey) GetId() string {
 	return sm9.id
 }
 
-func (sm9 *Sm9EncKey) ExportEncryptedPrivateKeyInfoPem(pass string, path string) error {
+func (sm9 *Sm9EncKey) ExportEncryptedPrivateKeyInfoPem(path string, pass string) error {
 
 	pass_str := C.CString(pass)
 	defer C.free(unsafe.Pointer(pass_str))
@@ -369,7 +369,7 @@ type Sm9SignKey struct {
 	id string
 }
 
-func ImportEncryptedSm9SignPrivateKeyInfoPem(pass string, path string, id string) (*Sm9SignKey, error) {
+func ImportEncryptedSm9SignPrivateKeyInfoPem(path string, pass string, id string) (*Sm9SignKey, error) {
 
 	pass_str := C.CString(pass)
 	defer C.free(unsafe.Pointer(pass_str))
@@ -397,7 +397,7 @@ func (sm9 *Sm9SignKey) GetId() string {
 	return sm9.id
 }
 
-func (sm9 *Sm9SignKey) ExportEncryptedPrivateKeyInfoPem(pass string, path string) error {
+func (sm9 *Sm9SignKey) ExportEncryptedPrivateKeyInfoPem(path string, pass string) error {
 
 	pass_str := C.CString(pass)
 	defer C.free(unsafe.Pointer(pass_str))
