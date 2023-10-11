@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/GmSSL/GmSSL-Go"
 )
 
 func main() {
@@ -133,6 +134,18 @@ func main() {
 	fmt.Printf("Signature = %x\n", signature)
 	ret := sm2pub.Verify(dgst, signature)
 	fmt.Print("Verify success = ", ret, "\n")
+
+
+	sign, _ := gmssl.NewSm2Signature(sm2pri, gmssl.Sm2DefaultId, true)
+	sign.Update([]byte("abc"))
+	signature1, _ := sign.Sign()
+	fmt.Printf("Sm2Signature Signature = %x\n", signature1)
+
+	sign, _ = gmssl.NewSm2Signature(sm2pub, gmssl.Sm2DefaultId, false)
+	sign.Update([]byte("abc"))
+	ret1 := sign.Verify(signature1)
+	fmt.Print("Sm2Signature Verify success = ", ret1, "\n")
+
 
 	sm2_ciphertext, _ := sm2pub.Encrypt([]byte("abc"))
 	sm2_plaintext, _ := sm2pri.Decrypt(sm2_ciphertext)
