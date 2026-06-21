@@ -197,10 +197,16 @@ func (cert *Sm2Certificate) GetSubject() ([]byte, map[string]string, error) {
 func (cert *Sm2Certificate) GetSubjectPublicKey() (*Sm2Key, error) {
 
 	ret := new(Sm2Key)
+	var x509_key C.X509_KEY
 
-	if C.x509_cert_get_subject_public_key(cert.cert, cert.certlen, &ret.sm2_key) != 1 {
+	if C.x509_cert_get_subject_public_key(cert.cert, cert.certlen, &x509_key) != 1 {
 		return nil, errors.New("Libgmssl inner error")
 	}
+	defer C.x509_key_cleanup(&x509_key)
+	if x509_key.algor != C.OID_ec_public_key || x509_key.algor_param != C.OID_sm2 {
+		return nil, errors.New("Certificate subject public key is not an SM2 key")
+	}
+	C.memcpy(unsafe.Pointer(&ret.sm2_key), unsafe.Pointer(&x509_key.u), C.sizeof_SM2_KEY)
 	ret.has_private_key = false
 
 	return ret, nil
@@ -217,5 +223,4 @@ func (cert *Sm2Certificate) VerifyByCaCertificate(ca_cert *Sm2Certificate, sm2_i
 	}
 	return true
 }
-
 

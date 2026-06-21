@@ -195,6 +195,7 @@ func (sm2 *Sm2Key) Decrypt(in []byte) ([]byte, error) {
 
 type Sm2Signature struct {
 	sm2_sign_ctx C.SM2_SIGN_CTX
+	sm2_verify_ctx C.SM2_VERIFY_CTX
 	sign bool
 }
 
@@ -216,7 +217,7 @@ func NewSm2Signature(sm2 *Sm2Key, id string, sign bool) (*Sm2Signature, error) {
 			return nil, errors.New("Libgmssl inner error")
 		}
 	} else {
-		if C.sm2_verify_init(&ret.sm2_sign_ctx, &sm2.sm2_key, id_str, C.strlen(id_str)) != 1 {
+		if C.sm2_verify_init(&ret.sm2_verify_ctx, &sm2.sm2_key, id_str, C.strlen(id_str)) != 1 {
 			return nil, errors.New("Libgmssl inner error")
 		}
 	}
@@ -234,7 +235,7 @@ func (sig *Sm2Signature) Update(data []byte) error {
 			return errors.New("Libgmssl inner error")
 		}
 	} else {
-		if C.sm2_verify_update(&sig.sm2_sign_ctx, (*C.uchar)(unsafe.Pointer(&data[0])), C.size_t(len(data))) != 1 {
+		if C.sm2_verify_update(&sig.sm2_verify_ctx, (*C.uchar)(unsafe.Pointer(&data[0])), C.size_t(len(data))) != 1 {
 			return errors.New("Libgmssl inner error")
 		}
 	}
@@ -257,11 +258,10 @@ func (sig *Sm2Signature) Verify(signature []byte) bool {
 	if sig.sign != false {
 		return false
 	}
-	if C.sm2_verify_finish(&sig.sm2_sign_ctx, (*C.uchar)(unsafe.Pointer(&signature[0])), C.size_t(len(signature))) != 1 {
+	if C.sm2_verify_finish(&sig.sm2_verify_ctx, (*C.uchar)(unsafe.Pointer(&signature[0])), C.size_t(len(signature))) != 1 {
 		return false
 	}
 	return true
 }
-
 
 

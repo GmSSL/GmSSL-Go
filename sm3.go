@@ -120,11 +120,10 @@ func Sm3Pbkdf2(pass string, salt []byte, iter uint, keylen uint) ([]byte, error)
 
 	key := make([]byte, keylen)
 
-	C.pbkdf2_hmac_sm3_genkey(pass_str, C.strlen(pass_str),
+	C.sm3_pbkdf2(pass_str, C.strlen(pass_str),
 		(*C.uchar)(unsafe.Pointer(&salt[0])), C.size_t(len(salt)),
 		C.size_t(iter), C.size_t(keylen),
 		(*C.uchar)(unsafe.Pointer(&key[0])))
 
 	return key, nil
 }
-

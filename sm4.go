@@ -14,7 +14,6 @@ package gmssl
 #include <string.h>
 #include <gmssl/sm4.h>
 #include <gmssl/mem.h>
-#include <gmssl/aead.h>
 #include <gmssl/error.h>
 */
 import "C"
@@ -351,4 +350,3 @@ func (gcm *Sm4Gcm) Finish() ([]byte, error) {
 	}
 	return outbuf[:outlen], nil
 }
-
